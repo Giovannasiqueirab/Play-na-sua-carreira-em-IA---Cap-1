@@ -54,6 +54,10 @@ cd gerenciador-culturas
 ```
 python main.py
 ```
+ou
+```
+py main.py
+```
 
 ## 📌 Exemplo de Uso
 
