@@ -107,5 +107,6 @@ Certifique-se de que todas as variáveis e bibliotecas necessárias estão corre
 ##  Tem dúvidas ❓ 
 ### Entre em contato:
 - giovannasiqueirab@gmail.com
-- ia3f@icloud.com 
+- ia3f@icloud.com  
+- tnlr.aabdias@gmail.com
 
