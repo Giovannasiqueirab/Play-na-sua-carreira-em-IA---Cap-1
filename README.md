@@ -27,7 +27,10 @@ A estimativa de insumos foi baseada em práticas comuns do mercado para cada cul
 
 ─ 📄 menu.py = Menu principal do programa  
 
-─ 📄 README.md = Documentação do projeto
+─ 📄 mediaDesvio.R = Calculo da media e desvio em R  
+
+─ 📄 README.md = Documentação do projeto 
+
 
 
 ## 📌 Pré-requisitos
@@ -69,10 +72,40 @@ py main.py
 4. Excluir cultura
 5. Sair
 ```
+## 🖥️ Calculo em R 
+### média
+ Este código tem como objetivo calcular a média de consumo de fertilizantes (Nitrogênio, NPK 4-14-8 e Potássio) em diferentes formatos de plantio. Os valores utilizados para os cálculos foram definidos com base em referências do mercado agrícola e nas dimensões das áreas selecionadas, garantindo um cenário realista para a análise.
 
-## ❓ Tem dúvidas ?  
+As áreas consideradas incluem quadrado, retângulo, triângulo, hexágono e linhas paralelas, cada uma com um espaçamento específico entre plantas e fileiras. Com isso, foi possível estimar a quantidade de fertilizante necessária para cada tipo de plantio e calcular a média de uso por metro quadrado.
+
+### Desvio
+
+Além da média de consumo, também foi feito o calculo de desvio padrão do uso de fertilizantes (Nitrogênio, NPK 4-14-8 e Potássio) para diferentes tipos de plantio. O desvio padrão é uma medida de dispersão que indica o grau de variação ou incerteza nos valores de consumo em relação à média calculada.
+
+Com base nas áreas de plantio e nos espaçamentos definidos, o desvio padrão ajuda a entender o quão consistentes ou variáveis são os dados de consumo de fertilizantes entre as diferentes áreas. Dessa forma, o cálculo do desvio padrão complementa a análise, oferecendo uma visão mais detalhada sobre a distribuição dos fertilizantes.
+
+## ▶️ Como Executar
+### Passo 1: Instalar o R
+Certifique-se de ter o R instalado em seu computador. Você pode baixá-lo aqui: https://www.r-project.org/
+
+### Passo 2: Instalar o RStudio (Opcional)  
+você conseguirá rodar o código em uma IDE, desde que tenha as extensões necessárias para isso. Você pode baixar o RStudio aqui: https://posit.co/downloads/
+
+### Passo 3: Rodar o Código
+Abra o RStudio ou qualquer IDE que você esteja usando para R.
+
+Crie um novo script (.R) e cole o código fornecido.
+
+Execute o código pressionando o botão Run (ou utilizando o atalho correspondente, geralmente Ctrl + Enter no RStudio).
+
+Os resultados da média e do desvio padrão serão exibidos no console.
+
+### ⭕ Observação
+Certifique-se de que todas as variáveis e bibliotecas necessárias estão corretamente definidas antes de rodar o código. Caso contrário, o código pode não funcionar como esperado.
+
+
+##  Tem dúvidas ❓ 
 ### Entre em contato:
-- giovanna.siqueirab@gmail.com
-- fulano.com.br  
-- beltrano.com.ve
+- giovannasiqueirab@gmail.com
+- ia3f@icloud.com 
 
