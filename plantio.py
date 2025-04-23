@@ -1,48 +1,60 @@
-# plantio.py
-# Função para adicionar dados de plantio para uma cultura
-def adicionar_dados(culturas):
-    # Verifica se há culturas cadastradas
-    if not culturas:
-        print("\nNenhuma cultura cadastrada. Cadastre uma cultura primeiro.")
-        return  # Sai da função caso não haja culturas
+import oracledb
+from config_db import get_connection
 
-    # Exibe as culturas cadastradas para que o usuário possa escolher uma
-    print("\nCulturas cadastradas:")
-    for i, cultura in enumerate(culturas):
-        print(f"{i + 1}. {cultura.nome} ({cultura.base_plantio})")
-
-    # Solicita ao usuário escolher a cultura
-    try:
-        escolha = int(input("Escolha o número da cultura: ")) - 1
-        if escolha < 0 or escolha >= len(culturas):
-            print("Escolha inválida!")  # Informa erro caso a escolha seja inválida
-            return
-    except ValueError:
-        print("Entrada inválida. Por favor, insira um número válido.")
-        return
-
-    # Obtém a cultura escolhida
-    cultura = culturas[escolha]
+class PlantioManager:
+    def __init__(self):
+        self.conn = get_connection()
     
-    # Solicita as dimensões da área de plantio (comprimento e largura)
-    try:
-        comprimento = float(input("Digite o comprimento da área de plantio (em metros): "))
-        largura = float(input("Digite a largura da área de plantio (em metros): "))
-    except ValueError:
-        print("Por favor, insira valores válidos para comprimento e largura.")
-        return
+    def __del__(self):
+        if self.conn:
+            self.conn.close()
 
-    # Calcula a área da plantação com base na cultura e dimensões fornecidas
-    area = cultura.calcular_area(comprimento, largura)
-    print(f"\nÁrea de plantio: {area:.2f} m²")  # Exibe a área com 2 casas decimais
+    def _calcular_custo_total(self, id_insumo, quantidade_total):
+        try:
+            with self.conn.cursor() as cursor:
+                cursor.execute("SELECT preco_usd FROM insumos WHERE id_insumo = :1", [id_insumo])
+                preco = cursor.fetchone()[0]
+                return quantidade_total * preco
+        except Exception as e:
+            print(f"\n Erro ao calcular custo: {e}")
+            return 0
 
-    # Calcula os insumos necessários para a cultura na área especificada
-    insumos = cultura.calcular_insumos(area)
-    
-    # Exibe os insumos necessários, se houver
-    if insumos:
-        print("\nInsumos necessários:")
-        for insumo, quantidade in insumos.items():
-            print(f"- {quantidade:.2f} kg de {insumo}")  # Exibe a quantidade de cada insumo
-    else:
-        print("Nenhum insumo necessário para esta cultura.")  # Caso não haja insumos para a cultura
+    def adicionar_plantio(self):
+        try:
+            with self.conn.cursor() as cursor:
+                # Listar plantações
+                cursor.execute("SELECT id_plantacao, nome FROM plantacoes")
+                plantios = cursor.fetchall()
+                
+                print("\n=== PLANTIOS CADASTRADOS ===")
+                for id_plant, nome in plantios:
+                    print(f"{id_plant} - {nome}")
+                
+                id_plantacao = int(input("\nID do plantio: "))
+                
+                # Obter insumos associados
+                cursor.execute("""
+                    SELECT i.nome, pi.quantidade_ha, pi.quantidade_total, i.unidade 
+                    FROM plantio_insumo pi
+                    JOIN insumos i ON pi.id_insumo = i.id_insumo
+                    WHERE pi.id_plantacao = :1
+                """, [id_plantacao])
+                
+                insumos = cursor.fetchall()
+                
+                if not insumos:
+                    print("\n Nenhum insumo associado a este plantio!")
+                    return
+                
+                # Calcular custos
+                total = 0.0
+                print("\n=== CUSTOS ESTIMADOS ===")
+                for nome, qtd_ha, qtd_total, unidade in insumos:
+                    custo = self._calcular_custo_total(id_insumo, qtd_total)
+                    total += custo
+                    print(f"- {nome}: {qtd_total:.2f} {unidade} → USD {custo:.2f}")
+                
+                print(f"\n💵 TOTAL: USD {total:.2f}")
+
+        except Exception as e:
+            print(f"\n Erro: {e}")
