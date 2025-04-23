@@ -81,3 +81,7 @@ pip install oracledb
 ```  
 py main.py
 ````
+
+-  etapa1-v1
+  - etapa2-v1 
+  - etapa2-v2 (Etapa Atual - Atividade Cap 6 - Python e além)
